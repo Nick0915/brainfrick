@@ -113,10 +113,10 @@ std::string read_file(const std::string& filepath) {
  * @return true if the brackets are valid, false otherwise.
  */
 bool check_bracket_pairs(const std::string& content) {
-    int64_t stack = 0;
+    ssize_t stack_size = 0;
 
-    uint current_line = 1;
-    uint current_column = 1;
+    size_t current_line = 1;
+    size_t current_column = 1;
 
     // [ (line, col), (line, col), ...]
     std::stack<std::tuple<uint, uint>> unmatched_left_braces;
@@ -134,17 +134,17 @@ bool check_bracket_pairs(const std::string& content) {
                     current_line, current_column
                 )
             );
-            stack++;
+            stack_size++;
         }
         if (content[i] == ']') {
             unmatched_left_braces.pop();
-            stack--;
+            stack_size--;
         }
         // means there were less '[' than ']'
-        if (stack < 0) {
+        if (stack_size < 0) {
             fprintf(
                 stderr,
-                "Missing matching left bracket for a right bracket at %u:%u.\n",
+                "Missing matching left bracket for a right bracket at %lu:%lu.\n",
                 current_line, current_column - 1
             );
             return false;
@@ -152,7 +152,7 @@ bool check_bracket_pairs(const std::string& content) {
         current_column++;
     }
     // means there were more '[' than ']'
-    if (stack != 0) {
+    if (stack_size != 0) {
         std::tuple<uint, uint> unmatched_brace_pos = unmatched_left_braces.top();
         fprintf(
             stderr,

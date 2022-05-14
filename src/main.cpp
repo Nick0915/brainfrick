@@ -13,12 +13,15 @@ int main(int argc, char *argv[]) {
 
     std::string input_filepath(argv[1]);
 
+    // check extension and existence
     if (!validate_file(input_filepath))
         exit(1);
 
+    // read file
     std::string content = read_file(input_filepath);
 
-    if (!check_bracket_pairs(content)) {
+    // syntax checking
+    // literally just checking if bracket pairs match lol
+    if (!check_bracket_pairs(content))
         exit(1);
-    }
 }

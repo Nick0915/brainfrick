@@ -1,9 +1,9 @@
 TARGET = brainfrick
 
-SRCDIR=src
-INCDIR=inc
-OBJDIR=obj
-OUTDIR=out
+SRCDIR = src
+INCDIR = inc
+OBJDIR = obj
+OUTDIR = out
 
 SOURCES = ${wildcard ${SRCDIR}/**.cpp}
 OBJECTS = ${patsubst ${SRCDIR}/%.cpp, ${OBJDIR}/%.o, ${SOURCES}}

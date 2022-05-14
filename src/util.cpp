@@ -1,6 +1,9 @@
 #include <stdio.h>
 
+#include <fstream>
 #include <sstream>
+#include <stack>
+#include <tuple>
 
 #include "util.h"
 
@@ -69,17 +72,6 @@ static bool check_file_exists(const std::string& filepath) {
 }
 
 /**
- * Makes sure the brackets in the source code match up. For example, [[]] is a
- * valid set of brackets, but [[] is not.
- *
- * @param filepath the relative path to the file containing the source.
- * @return true if the brackets are valid, false otherwise.
- */
-bool check_bracket_pairs(const std::string& filepath) {
-    return false;
-}
-
-/**
  * Returns whether a file is a valid brainf*ck file or not. Performs a number of
  * checks and returns false if any of them fail:
  * 1. The file name must end in .bf (or .BF, or any other capitalization of .bf)
@@ -88,7 +80,86 @@ bool check_bracket_pairs(const std::string& filepath) {
  * @param filepath the relative path to the file.
  */
 bool validate_file(const std::string& filepath) {
-    return check_file_extension(filepath) &&
-           check_file_exists(filepath) /* &&
-           check_bracket_pairs(filepath) */;
+    if (!check_file_extension(filepath))
+        return false;
+    if (!check_file_exists(filepath))
+        return false;
+
+    return true;
+}
+
+/**
+ * Reads the content of the given file into a string.
+ *
+ * @param filepath the relative path to the file.
+ * @return a string containing the contents of the file.
+ */
+std::string read_file(const std::string& filepath) {
+    // https://stackoverflow.com/questions/2912520/read-file-contents-into-a-string-in-c
+    std::ifstream stream(filepath);
+    std::string content;
+    content.assign(
+        std::istreambuf_iterator<char>(stream),
+        std::istreambuf_iterator<char>()
+    );
+    return content;
+}
+
+/**
+ * Makes sure the brackets in the source code match up. For example, [[]] is a
+ * valid set of brackets, but [[] is not.
+ *
+ * @param content the source to analyze.
+ * @return true if the brackets are valid, false otherwise.
+ */
+bool check_bracket_pairs(const std::string& content) {
+    int64_t stack = 0;
+
+    uint current_line = 1;
+    uint current_column = 1;
+
+    // [ (line, col), (line, col), ...]
+    std::stack<std::tuple<uint, uint>> unmatched_left_braces;
+
+    for (size_t i = 0; i < content.size(); i++) {
+        if (content[i] == '\n') {
+            // increment line counter
+            current_line++;
+            // reset column counter
+            current_column = 1;
+        }
+        if (content[i] == '[') {
+            unmatched_left_braces.push(
+                std::tuple<uint, uint>(
+                    current_line, current_column
+                )
+            );
+            stack++;
+        }
+        if (content[i] == ']') {
+            unmatched_left_braces.pop();
+            stack--;
+        }
+        // means there were less '[' than ']'
+        if (stack < 0) {
+            fprintf(
+                stderr,
+                "Missing matching left bracket for a right bracket at %u:%u.\n",
+                current_line, current_column - 1
+            );
+            return false;
+        }
+        current_column++;
+    }
+    // means there were more '[' than ']'
+    if (stack != 0) {
+        std::tuple<uint, uint> unmatched_brace_pos = unmatched_left_braces.top();
+        fprintf(
+            stderr,
+            "Missing matching right bracket for a left bracket at %u:%u.\n",
+            std::get<0>(unmatched_brace_pos), std::get<1>(unmatched_brace_pos) - 1
+        );
+        return false;
+    }
+    return true;
 }

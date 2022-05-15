@@ -38,7 +38,7 @@ static std::string to_lower_case(const std::string& input) {
 static bool check_file_extension(const std::string& filepath) {
     // test the extension name
     uint name_size = filepath.size();
-    uint dot_index = filepath.find('.');
+    uint dot_index = filepath.find_last_of('.');
     if (dot_index == std::string::npos || dot_index > filepath.size()) {
         fprintf(stderr, "File must have the .bf extension.\n");
         return false;

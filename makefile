@@ -9,7 +9,7 @@ SOURCES = ${wildcard ${SRCDIR}/**.cpp}
 OBJECTS = ${patsubst ${SRCDIR}/%.cpp, ${OBJDIR}/%.o, ${SOURCES}}
 
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -Wshadow -I${INCDIR} -lm -O0 -g
+CXXFLAGS = -std=c++11 -Wall -Wextra -Wshadow -I${INCDIR} -lm -g -O0
 
 LD = g++
 LDFLAGS = -O0 -g

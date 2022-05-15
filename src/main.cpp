@@ -3,7 +3,9 @@
 
 #include <string>
 
-#include <util.h>
+#include "util.h"
+
+#include "Interpreter.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -24,4 +26,12 @@ int main(int argc, char *argv[]) {
     // literally just checking if bracket pairs match lol
     if (!check_bracket_pairs(content))
         exit(1);
+
+    Interpreter interpreter(content);
+
+    while (true) {
+        if (!interpreter.execute()) {
+            break;
+        }
+    }
 }

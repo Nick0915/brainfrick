@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <tuple>
 
 #define TAPE_SIZE USHRT_MAX
 
@@ -29,13 +30,12 @@ private:
     ushort m_max_used_address; // if wrapping ever reaches this, error and abort
 
     uint8_t m_tape[TAPE_SIZE];
-    //! Keep track of these if we need to print error messages
-    /*
-    size_t m_line;
-    size_t m_column;
-    */
+    size_t m_times_looped;
 
     static bool is_valid_token(char token);
+    int find_matching_right_bracket();
+    int find_matching_left_bracket();
+    std::tuple<size_t, size_t> get_line_and_col(size_t index);
 
     // brainf*ck instructions as functions
     void move_right();

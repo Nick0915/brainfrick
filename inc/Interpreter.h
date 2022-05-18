@@ -15,9 +15,12 @@ public:
 
     bool execute();
 
+    bool has_next();
+
     // debugging methods
     size_t get_prog_counter();
     char get_source_char_at(size_t index);
+    char get_next_source_char();
     ushort get_address_pointer();
     ushort get_max_used_address();
     uint8_t get_tape_at(ushort index);

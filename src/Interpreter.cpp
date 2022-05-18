@@ -67,13 +67,16 @@ bool Interpreter::execute() {
         // ran out of instructions
         if (m_prog_counter >= m_source.size())
             return false;
+        curr = m_source[m_prog_counter];
     }
 
+#if DEBUG
     auto tup = get_line_and_col(m_prog_counter);
     printf(
         "Processing command: '%c' at %lu:%lu\n",
         curr, std::get<0>(tup), std::get<1>(tup)
     );
+#endif
 
     switch (curr) {
         case '>': move_right(); break;
@@ -94,6 +97,10 @@ bool Interpreter::execute() {
     }
 
     return true;
+}
+
+bool Interpreter::has_next() {
+    return m_prog_counter < m_source.size();
 }
 
 void Interpreter::move_right() {
@@ -156,7 +163,8 @@ void Interpreter::decrement() {
 
 void Interpreter::write() {
     // putc((char) m_tape[m_address_pointer], stdout);
-    printf("%c", m_tape[m_address_pointer]);
+    fprintf(stdout, "%c", m_tape[m_address_pointer]);
+    fflush(stdout);
     m_prog_counter++;
 }
 
@@ -191,6 +199,10 @@ size_t Interpreter::get_prog_counter() {
 
 char Interpreter::get_source_char_at(size_t index) {
     return m_source[index];
+}
+
+char Interpreter::get_next_source_char() {
+    return get_source_char_at(get_prog_counter());
 }
 
 ushort Interpreter::get_address_pointer() {

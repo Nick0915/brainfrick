@@ -7,13 +7,21 @@
 
 #include "Interpreter.h"
 
-int main(int argc, char *argv[]) {
+int main(
+#ifndef DEFAULT_FILE
+    int argc, char *argv[]
+#endif
+) {
+#ifdef DEFAULT_FILE
+    std::string input_filepath("res/hello_world.bf");
+#else
     if (argc != 2) {
         fprintf(stderr, "Usage: brainfrick <input file>\n");
         exit(1);
     }
 
     std::string input_filepath(argv[1]);
+#endif
 
     // check extension and existence
     if (!validate_file(input_filepath))
@@ -29,9 +37,9 @@ int main(int argc, char *argv[]) {
 
     Interpreter interpreter(content);
 
-    while (true) {
-        if (!interpreter.execute()) {
-            break;
-        }
+    while (interpreter.has_next()) {
+        interpreter.execute();
     }
+
+    return 0;
 }

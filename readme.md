@@ -28,5 +28,5 @@ where the input file is a `.bf` (given in relative path format) containing brain
     * Look here to learn more about Brainf*ck and esoteric programming languages.
 * [Brainf*ck Specification](https://github.com/brain-lang/brainfuck/blob/master/brainfuck.md).
     * Specification I followed when developing the interpreter.
-* [Hello World in Brainf*ck](https://therenegadecoder.com/code/hello-world-in-brainfuck/) (found in `res/hello_world.bf`).
+* [Hello World in Brainf*ck](https://esolangs.org/wiki/Brainfuck) (found in `res/hello_world.bf`).
     * One of the sample files I used for testing.

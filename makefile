@@ -16,7 +16,7 @@ LD = g++
 LDFLAGS = -O0 -g
 
 all: ${TARGET}
-	# mv ${TARGET} ${OUTDIR}/
+	mv ${TARGET} ${OUTDIR}/
 
 ${TARGET}: ${OBJECTS}
 	${LD} ${LDFLAGS} ${OBJECTS} -o ${TARGET}

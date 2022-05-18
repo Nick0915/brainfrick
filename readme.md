@@ -33,5 +33,3 @@ where the input file is a `.bf` (given in relative path format) containing brain
     * [hello_2.b](https://github.com/rdebath/Brainfuck/blob/master/testing/Hello2.b)
     * [hello_world.bf](https://esolangs.org/wiki/Brainfuck)
     * [test.bf](res/beer.b) (made it myself)
-* [Hello World in Brainf*ck](https://esolangs.org/wiki/Brainfuck) (found in `res/hello_world.bf`).
-    * One of the sample files I used for testing.

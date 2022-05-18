@@ -49,7 +49,7 @@ static bool check_file_extension(const std::string& filepath) {
     }
     fprintf(
         stderr,
-        "Cannot accept files with '%s' extension. Extension must be '.bf'.\n",
+        "Cannot accept files with '%s' extension. Extension must be '.bf' or '.b'.\n",
         extension.c_str()
     );
     return false;
